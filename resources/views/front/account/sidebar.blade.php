@@ -1,6 +1,14 @@
 <div class="card border-0 shadow mb-4 p-3">
     <div class="s-body text-center mt-3">
-        <img src="assets/assets/images/avatar7.png" alt="avatar"  class="rounded-circle img-fluid" style="width: 150px;">
+        @if (Auth::user()->image !="")
+        <div style="width: 150px; height: 150px; margin-top: 1rem; display: flex; justify-content: center; align-items: center; background-color: #f0f0f0; border-radius: 50%; overflow: hidden; margin: 0 auto;">
+            <img src="{{asset('profile_pic/'.Auth::user()->image)}}" style="width: 100%; height: 100%; object-fit: cover;" class="img-fluid" alt="{{ Auth::user()->name }}">
+        </div>
+        @else
+        <div style="width: 150px; height: 150px; margin-top: 1rem; display: flex; justify-content: center; align-items: center; background-color: #f0f0f0; border-radius: 50%; overflow: hidden; margin: 0 auto;">
+            <img src="assets/images/avatar7.png" alt="avatar" class="img-fluid" style="width: 100%; height: 100%; object-fit: cover;">
+        </div>
+        @endif
         <h5 class="mt-3 pb-0">{{Auth::user()->name}}</h5>
         <p class="text-muted mb-1 fs-6">Full Stack Developer</p>
         <div class="d-flex justify-content-center mb-2">

@@ -6,7 +6,9 @@ use App\Models\User;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
+
 
 class AccountController extends Controller
 {
@@ -57,8 +59,60 @@ class AccountController extends Controller
 
     //to show user profile page
     public function profile(){
-        $user = User::find(Auth::user()->id);
-        return view('front.account.profile', compact('user'));
+        $id = Auth::user()->id;
+        $user = User::where('id',$id)->first();
+        return view('front.account.profile', ['user'=> $user]);
+    }
+    //to update profile
+    public function updateProfile(Request $request){
+        $id = Auth::user()->id;
+        $validator = validator::make($request->all(),[
+            'name'=>'required|min:5|max:30',
+            'email'=>'required|email|unique:users,email,'.$id.',id',
+        ]);
+        if($validator->passes()){
+            $user=User::find(Auth::user()->id);
+            $user->name=$request->name;
+            $user->email=$request->email;
+            $user->mobile=$request->mobile;
+            $user->designation=$request->designation;
+            $user->save();
+            return redirect()->route('account.profile')->with('success','profile updated successfully');
+        }else{
+            return redirect()->route('account.profile')->withInput()->withErrors($validator);
+        }
+    }
+    //update profile picture
+    public function updateProfilePic(Request $request) {
+        $id = Auth::user()->id;
+        $validator = Validator::make($request->all(), [
+            'image' => 'required|image'
+        ]);
+
+        if (!empty($request->image)) {
+            $image = $request->image;
+            $ext = $image->getClientOriginalExtension();
+            $imageName = time() . '.' . $ext;
+            $image->move(public_path('/profile_pic/'), $imageName);
+
+            //to delete old image
+            if (File::exists(public_path('/profile_pic/'.Auth::user()->image))) {
+                File::delete(public_path('/profile_pic/'.Auth::user()->image));
+            }
+            User::where('id', $id)->update(['image' => $imageName]);
+
+            session()->flash('success', "Profile Picture Updated Successfully");
+
+            return response()->json([
+                'status' => true,
+                'errors' => []
+            ]);
+        } else {
+            return response()->json([
+                'status' => false,
+                'errors' => $validator->errors()
+            ]);
+        }
     }
 
     //logout
