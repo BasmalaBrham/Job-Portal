@@ -6,7 +6,7 @@
         </div>
         @else
         <div style="width: 150px; height: 150px; margin-top: 1rem; display: flex; justify-content: center; align-items: center; background-color: #f0f0f0; border-radius: 50%; overflow: hidden; margin: 0 auto;">
-            <img src="assets/images/avatar7.png" alt="avatar" class="img-fluid" style="width: 100%; height: 100%; object-fit: cover;">
+            <img src="{{asset('assets/images/avatar7.png')}}" alt="avatar" class="img-fluid" style="width: 100%; height: 100%; object-fit: cover;">
         </div>
         @endif
         <h5 class="mt-3 pb-0">{{Auth::user()->name}}</h5>
