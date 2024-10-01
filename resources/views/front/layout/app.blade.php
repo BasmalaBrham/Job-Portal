@@ -76,6 +76,7 @@
 <script src="{{asset('assets/js/instantpages.5.1.0.min.js')}}"></script>
 <script src="{{asset('assets/js/lazyload.17.6.0.min.js')}}"></script>
 <script src="{{asset('assets/js/custom.js')}}"></script>
+@yield('customJs')
 <script>
     $("#profilePicForm").submit(function(e) {
     e.preventDefault();
