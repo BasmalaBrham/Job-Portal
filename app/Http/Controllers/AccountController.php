@@ -177,6 +177,64 @@ class AccountController extends Controller
         return view('front.account.job.my-jobs',[
             'jobs'=>$jobs
         ]);
+<<<<<<< HEAD
+=======
+    }
+
+    //to show the page which edit my job
+    public function editJob(Request $request ,$id){
+        $categories=Category::orderBy('name','ASC')->where('status',1)->get();
+        $jobTypes = JobType::orderBy('name', 'ASC')->where('status', 1)->get();
+        $job=Job::where([
+            'user_id'=>Auth::user()->id,
+            'id'=>$id
+        ])->firstOrFail();
+        if($job==null){
+            abort(404);
+        }
+        return view('front.account.job.edit',[
+            'categories'=>$categories,
+            'jobTypes'=>$jobTypes,
+            'job'=>$job
+            ]);
+    }
+
+    //to update my job
+    public function updateJob(Request $request, $id){
+        $rules=[
+            'title'=>'required|min:10|max:200',
+            'category'=>'required',
+            'jobType'=>'required',
+            'vacancy'=>'required|integer',
+            'location'=>'required|max:50',
+            'description'=>'required',
+            'company_name'=>'required|min:3|max:50',
+        ];
+        $validator=validator::make($request->all(),$rules);
+        if($validator->passes()){
+            $job = Job::findOrFail($id);
+            $job->title=$request->title;
+            $job->category_id=$request->category;
+            $job->job_type_id=$request->jobType;
+            $job->vacancy=$request->vacancy;
+            $job->user_id=Auth::user()->id;
+            $job->salary=$request->salary;
+            $job->location=$request->location;
+            $job->description=$request->description;
+            $job->benefits=$request->benefits;
+            $job->responsibility=$request->responsibility;
+            $job->qualification=$request->qualification;
+            $job->keywords=$request->keywords;
+            $job->experience=$request->experience;
+            $job->company_name=$request->company_name;
+            $job->company_location=$request->company_location;
+            $job->company_website=$request->website;
+            $job->save();
+            return redirect()->route('account.myJob',$id)->with('success', 'Job updated successfully');
+        }else{
+            return redirect()->route('account.editJob', $id)->withInput()->withErrors($validator);
+        }
+>>>>>>> 91b9d39cdd4297400449c4eef8d3d91d106a594f
     }
 
     //to show the page which edit my job

@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 
+=======
+>>>>>>> 91b9d39cdd4297400449c4eef8d3d91d106a594f
 @extends('front.layout.app')
 @section('main')
 <section class="section-5 bg-2">
