@@ -42,7 +42,6 @@ Route::group(['prefix'=>'account'],function(){
         Route::get('/my-jobs/edit/{jobId}',[AccountController::class,'editJob'])->name('account.editJob');
         Route::post('/update-job/{jobId}',[AccountController::class,'updateJob'])->name('account.updateJob');
         Route::post('/delete-job',[AccountController::class,'destroy'])->name('account.destroyJob');
-        Route::post('/my-jobs/update/{jobId}',[AccountController::class,'updateJob'])->name('account.updateJob');
         Route::get('/logout',[AccountController::class,'logout'])->name('account.logout');
     });
 });

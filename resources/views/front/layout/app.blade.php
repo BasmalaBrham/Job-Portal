@@ -17,14 +17,14 @@
 <header>
 	<nav class="navbar navbar-expand-lg navbar-light bg-white shadow py-3">
 		<div class="container">
-			<a class="navbar-brand" href="index.html">CareerVibe</a>
+			<a class="navbar-brand" href="{{route('home')}}">CareerVibe</a>
 			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
 			</button>
 			<div class="collapse navbar-collapse" id="navbarSupportedContent">
 				<ul class="navbar-nav ms-0 ms-sm-0 me-auto mb-2 mb-lg-0 ms-lg-4">
 					<li class="nav-item">
-						<a class="nav-link" aria-current="page" href="index.html">Home</a>
+						<a class="nav-link" aria-current="page" href="{{route('home')}}">Home</a>
 					</li>
 					<li class="nav-item">
 						<a class="nav-link" aria-current="page" href="jobs.html">Find Jobs</a>
@@ -81,15 +81,15 @@
     $("#profilePicForm").submit(function(e) {
     e.preventDefault();
 
-    var formData = new FormData(this);  // تأكد من استخدام FormData بشكل صحيح
+    var formData = new FormData(this);
 
     $.ajax({
         url: '{{route("account.updateProfilePic")}}',
         type: 'post',
         data: formData,
         dataType: 'json',
-        contentType: false,   // يجب أن تكون false عند تحميل الملفات
-        processData: false,   // يجب أن تكون false عند تحميل الملفات
+        contentType: false,
+        processData: false,
         success: function(response) {
             if (response.status == false) {
                 var errors = response.errors;
