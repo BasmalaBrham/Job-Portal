@@ -17,7 +17,7 @@ class HomeController extends Controller
         return view("front.home", [
             'categories' => $categories,
             'featuredJobs' => $featuredJobs,
-            'latestJobs' => $latestJobs  // إزالة المسافات الزائدة
+            'latestJobs' => $latestJobs
         ]);
     }
 
