@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\JobNotificationEmail;
 use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\Job;
 use App\Models\JobApplication;
 use App\Models\JobType;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class JobsController extends Controller
 {
@@ -75,55 +78,6 @@ class JobsController extends Controller
     }
 
     //to apply on job
-    // public function applyJob(Request $request){
-    //     $id=$request->id;
-    //     $job = Job::where('id', $id)->first();
-
-    //     //if job not found in db
-    //     if($job==null){
-    //         session()->flash('error','Job does noy exist');
-    //         return response()->json([
-    //             'status'=>false,
-    //             'message'=>"Job does noy exist"
-    //         ]);
-    //     }
-
-    //     //you cannot apply on your own job
-    //     $employer_id = $job->user_id;
-    //     if($employer_id == Auth::user()->id){
-    //         session()->flash('error','you cannot apply on your own job');
-    //         return response()->json([
-    //             'status' => false,
-    //             'message' => "you cannot apply on your own job"
-    //         ]);
-    //     }
-
-    //     //you can apply on a job
-    //     $jobApplication = JobApplication::where([
-    //         'user_id'=>Auth::user()->id,
-    //         'job_id'=>$id
-    //     ])->count();
-    //     if($jobApplication > 0){
-    //         session()->flash('error','you already applied on this job');
-    //         return response()->json([
-    //             'status'=>false,
-    //             'message'=>"you already applied on this job"
-    //         ]);
-    //     }
-    //     $application = new JobApplication();
-    //     $application->job_id=$id;
-    //     $application->user_id=Auth::user()->id;
-    //     $application->employer_id=$employer_id;
-    //     $application->created_at=now();
-
-    //     session()->flash('success','you have successfully applied');
-    //     return response()->json([
-    //         'status'=>true,
-    //         'message'=>"you have successfully applied"
-    //     ]);
-    // }
-
-
     public function applyJob(Request $request){
         $id = $request->id;
 
@@ -183,6 +137,16 @@ class JobsController extends Controller
                 'message' => 'Failed to apply. Please try again.'
             ]);
         }
+
+        //send notificatio email to employer
+        $employer=User::where('id',$job->user_id)->first();
+        $mailData=[
+            'employer'=>$employer,
+            'user'=>Auth::user(),
+            'job'=>$job
+        ];
+        Mail::to($employer->email)->send(new JobNotificationEmail($mailData));
+
     }
 
 }
