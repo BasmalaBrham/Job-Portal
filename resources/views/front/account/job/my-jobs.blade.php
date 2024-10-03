@@ -66,11 +66,8 @@
                                                     <ul class="dropdown-menu dropdown-menu-end">
                                                         <li><a class="dropdown-item" href="job-detail.html"> <i class="fa fa-eye" aria-hidden="true"></i> View</a></li>
                                                         <li><a class="dropdown-item" href="{{ route('account.editJob', $job->id) }}"><i class="fa fa-edit" aria-hidden="true"></i> Edit</a></li>
-<<<<<<< HEAD
                                                         <li><a class="dropdown-item" href="#" onclick="destroyJob({{$job->id}})"><i class="fa fa-trash" aria-hidden="true"></i> Delete</a></li>
-=======
                                                         <li><a class="dropdown-item" href="#"><i class="fa fa-trash" aria-hidden="true"></i> Remove</a></li>
->>>>>>> 91b9d39cdd4297400449c4eef8d3d91d106a594f
                                                     </ul>
                                                 </div>
                                             </td>
