@@ -256,7 +256,7 @@ class AccountController extends Controller
     }
     //to show my job application
     public function myJobApplication(){
-        $JobApplications= JobApplication::where('user_id',Auth::user()->id)->with(['job','job.jobType'])->paginate(10);
+        $JobApplications= JobApplication::where('user_id',Auth::user()->id)->with(['job','job.jobType','job.applications'])->paginate(10);
         return view('front.account.job.my-job-application',[
             'JobApplications'=>$JobApplications
         ]);

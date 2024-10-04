@@ -47,7 +47,7 @@
                                                 <div class="info1">{{$JobApplication->job->jobType->name}} .{{$JobApplication->job->location}}</div>
                                             </td>
                                             <td>{{\carbon\carbon::parse($JobApplication->job->created_at)->format('d M, Y')}}</td>
-                                            <td>130 Applications</td>
+                                            <td>{{$JobApplication->job->applications->count()}}Applications</td>
                                             <td>
                                                 @if ($JobApplication->job->status==1)
                                                 <div class="job-status text-capitalize">Active</div>
@@ -68,6 +68,8 @@
                                             </td>
                                         </tr>
                                         @endforeach
+                                        @else
+                                        <td colspan="5">Job Apllication Not Found</td>
                                     @endif
                                 </tbody>
 
