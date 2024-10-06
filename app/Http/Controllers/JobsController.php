@@ -8,6 +8,7 @@ use App\Models\Category;
 use App\Models\Job;
 use App\Models\JobApplication;
 use App\Models\JobType;
+use App\Models\SavedJob;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
@@ -74,7 +75,11 @@ class JobsController extends Controller
         if($job == null){
             abort(404);
         }
-        return view('front.account.job.jobDetail',['job'=>$job]);
+        $count= SavedJob::where([
+            'user_id'=>Auth::user()->id,
+            'job_id'=>$id
+        ])->count();
+        return view('front.account.job.jobDetail',['job'=>$job,'count'=>$count]);
     }
 
     //to apply on job
@@ -146,7 +151,43 @@ class JobsController extends Controller
             'job'=>$job
         ];
         Mail::to($employer->email)->send(new JobNotificationEmail($mailData));
+    }
+    //to save job
+    public function saveJob(Request $request){
+        $id = $request->id;
+        $job = Job::find($id);
+        if($job==null){
+            session()->flash('error', 'Job not found');
+            return response()->json([
+                'status' => false,
+                'message' => 'Job not found'
+            ]);
+        }
+        //if already save
+        $count= SavedJob::where([
+            'user_id'=>Auth::user()->id,
+            'job_id'=>$id
+        ])->count();
+
+        if($count >0){
+            session()->flash('error', 'You already saved this job');
+            return response()->json([
+                'status' => false,
+                'message' => 'Job already saved this job'
+            ]);
+        }
+
+        $savedJob= new SavedJob;
+        $savedJob->job_id=$id;
+        $savedJob->user_id=Auth::user()->id;
+        $savedJob->save();
+        if ($savedJob->save()) {
+            session()->flash('success', 'You have successfully saved job');
+            return response()->json([
+                'status' => true,
+                'message' => 'You have successfully saved job'
+            ]);
+        }
 
     }
-
 }
