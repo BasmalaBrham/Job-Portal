@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-
-=======
->>>>>>> 91b9d39cdd4297400449c4eef8d3d91d106a594f
 @extends('front.layout.app')
 @section('main')
 <section class="section-5 bg-2">
@@ -92,22 +88,22 @@
 
                             <div class="mb-4">
                                 <label for="" class="mb-2">Description<span class="req">*</span></label>
-                                <textarea class="form-control" name="description" id="description" cols="5" rows="5" placeholder="Description @error('description') is-invalid @enderror">{{$job->description}}</textarea>
+                                <textarea class="textarea" name="description" id="description" cols="5" rows="5" placeholder="Description @error('description') is-invalid @enderror">{{$job->description}}</textarea>
                                 @error('description')
                                         <p class="invalid-feedback">{{$message}}</p>
                                 @enderror
                             </div>
                             <div class="mb-4">
                                 <label for="" class="mb-2">Benefits</label>
-                                <textarea class="form-control" name="benefits" id="benefits" cols="5" rows="5" placeholder="Benefits"> {{$job->benefits}}</textarea>
+                                <textarea class="textarea" name="benefits" id="benefits" cols="5" rows="5" placeholder="Benefits"> {{$job->benefits}}</textarea>
                             </div>
                             <div class="mb-4">
                                 <label for="" class="mb-2">Responsibility</label>
-                                <textarea class="form-control" name="responsibility"  id="responsibility" cols="5" rows="5" placeholder="Responsibility">{{$job->responsibility}}</textarea>
+                                <textarea class="textarea" name="responsibility"  id="responsibility" cols="5" rows="5" placeholder="Responsibility">{{$job->responsibility}}</textarea>
                             </div>
                             <div class="mb-4">
                                 <label for="" class="mb-2">Qualifications</label>
-                                <textarea class="form-control" name="qualification" id="qualification" cols="5" rows="5" placeholder="Qualifications">{{$job->qualification}}</textarea>
+                                <textarea class="textarea" name="qualification" id="qualification" cols="5" rows="5" placeholder="Qualifications">{{$job->qualification}}</textarea>
                             </div>
 
                             <div class="mb-4">
