@@ -33,6 +33,9 @@
                 @if (!Auth::check())
 				    <a class="btn btn-outline-primary me-2" href="{{route('account.login')}}" type="submit">Login</a>
                 @else
+                    @if (Auth::user()->role=='admin')
+                        <a class="btn btn-outline-primary me-2" href="{{route('admin.dashboard')}}" type="submit">Admin</a>
+                    @endif
                     <a class="btn btn-outline-primary me-2" href="{{route('account.profile')}}" type="submit">Account</a>
                 @endif
 				<a class="btn btn-primary" href="{{route('account.createJob')}}" type="submit">Post a Job</a>
@@ -79,7 +82,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.27.3/trumbowyg.min.js" integrity="sha512-YJgZG+6o3xSc0k5wv774GS+W1gx0vuSI/kr0E0UylL/Qg/noNspPtYwHPN9q6n59CTR/uhgXfjDXLTRI+uIryg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>@yield('customJs')
 <script>
     $('.textarea').trumbowyg();
-    
+
     $("#profilePicForm").submit(function(e) {
     e.preventDefault();
 

@@ -1,9 +1,12 @@
 <?php
 
 use App\Http\Controllers\AccountController;
+use App\Http\Controllers\admin\DashBoardController;
+use App\Http\Controllers\admin\UserController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\JobsController;
 use Illuminate\Support\Facades\Route;
+use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,6 +28,16 @@ Route::get('/jobs',[JobsController::class,'index'])->name('jobs');
 Route::get('/jobs/detail/{id}',[JobsController::class,'detail'])->name('jobDetail');
 Route::post('/apply-job',[JobsController::class,'applyJob'])->name('applyJob');
 Route::post('/save-job',[JobsController::class,'saveJob'])->name('saveJob');
+
+
+//admin route
+Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'checkRole']], function() {
+    Route::get('/dashboard', [DashBoardController::class, 'index'])->name('admin.dashboard');
+    Route::get('/users', [UserController::class, 'index'])->name('admin.users');
+    Route::get('/users/{id}', [UserController::class, 'edit'])->name('admin.users.edit');
+    Route::put('/users/{id}', [UserController::class, 'update'])->name('admin.users.update');
+    Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('admin.users.destroy');
+});
 
 
 Route::group(['prefix'=>'account'],function(){
