@@ -6,20 +6,22 @@
             <div class="col">
                 <nav aria-label="breadcrumb" class=" rounded-3 p-3 mb-4">
                     <ol class="breadcrumb mb-0">
-                        <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">Account Settings</li>
+                        <li class="breadcrumb-item"><a href="{{route('admin.dashboard')}}">Home</a></li>
+                        <li class="breadcrumb-item"><a href="{{route('admin.job')}}">Jobs</a></li>
+                        <li class="breadcrumb-item active">Edit</li>
                     </ol>
                 </nav>
             </div>
         </div>
         <div class="row">
             <div class="col-lg-3">
-                @include('front.account.sidebar')
+                @include('admin.sidebar')
             </div>
             <div class="col-lg-9">
                 @include('front.layout.message')
-                <form action="{{ route('account.updateJob', $job->id) }}" method="POST" id="editJobForm" name="editJobForm">
+                <form action="{{ route('admin.job.update', $job->id) }}" method="POST" id="editJobForm" name="editJobForm">
                     @csrf
+                    @method('PUT')
                     <div class="card border-0 shadow mb-4 ">
                         <div class="card-body card-form p-4">
                             <h3 class="fs-4 mb-1">Edit Job Details</h3>
@@ -85,7 +87,30 @@
                                     @enderror
                                 </div>
                             </div>
-
+                            <div class="row">
+                                <div class="mb-4 col-md-6" >
+                                    <div class="form-check">
+                                        <input {{($job->isFeatured==1)?'checked':''}} class="form-check-input" type="checkbox" value="1" id="isFeatured" name="isFeatured">
+                                        <label class="form-check-label" for="isFeatured">
+                                          Featured
+                                        </label>
+                                      </div>
+                                </div>
+                                <div class="mb-4 col-md-6" >
+                                    <div class="form-check-inline">
+                                        <input {{($job->status==1)?'checked':''}} class="form-check-input" type="radio" value="1" id="status-active" name="status">
+                                        <label class="form-check-label" for="status">
+                                          Active
+                                        </label>
+                                      </div>
+                                    <div class="form-check-inline">
+                                        <input {{($job->status==0)?'checked':''}} class="form-check-input" type="radio" value="0" id="status-block" name="status">
+                                        <label class="form-check-label" for="status">
+                                          Block
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="mb-4">
                                 <label for="" class="mb-2">Description<span class="req">*</span></label>
                                 <textarea class="textarea" name="description" id="description" cols="5" rows="5" placeholder="Description @error('description') is-invalid @enderror">{{$job->description}}</textarea>

@@ -2,8 +2,11 @@
 
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\admin\DashBoardController;
+use App\Http\Controllers\admin\JobAdminController;
+use App\Http\Controllers\admin\JobController;
 use App\Http\Controllers\admin\UserController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\JobController as ControllersJobController;
 use App\Http\Controllers\JobsController;
 use Illuminate\Support\Facades\Route;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
@@ -37,6 +40,11 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'checkRole']], funct
     Route::get('/users/{id}', [UserController::class, 'edit'])->name('admin.users.edit');
     Route::put('/users/{id}', [UserController::class, 'update'])->name('admin.users.update');
     Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('admin.users.destroy');
+    Route::get('/jobs',[JobAdminController::class ,'index'])->name('admin.job');
+    Route::get('/jobs/edit/{id}',[JobAdminController::class ,'edit'])->name('admin.job.edit');
+    Route::put('/jobs/{id}',[JobAdminController::class ,'update'])->name('admin.job.update');
+    Route::delete('/jobs/{id}', [JobAdminController::class, 'destroy'])->name('admin.jobs.destroy');
+
 });
 
 

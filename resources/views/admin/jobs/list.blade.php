@@ -7,7 +7,7 @@
                 <nav aria-label="breadcrumb" class=" rounded-3 p-3 mb-4">
                     <ol class="breadcrumb mb-0">
                         <li class="breadcrumb-item"><a href="{{route('admin.dashboard')}}">Home</a></li>
-                        <li class="breadcrumb-item active">Users</li>
+                        <li class="breadcrumb-item active">Jobs</li>
                     </ol>
                 </nav>
             </div>
@@ -23,7 +23,7 @@
                         <div class="card-body card-form">
                             <div class="d-flex justify-content-between">
                                 <div>
-                                    <h3 class="fs-4 mb-1">Users</h3>
+                                    <h3 class="fs-4 mb-1">Jobs</h3>
                                 </div>
                                 <div style="margin-top: -10px;">
                                 </div>
@@ -34,30 +34,39 @@
                                     <thead class="bg-light">
                                         <tr>
                                             <th scope="col">ID</th>
-                                            <th scope="col">Name</th>
-                                            <th scope="col">Email</th>
-                                            <th scope="col">Mobile</th>
+                                            <th scope="col">Title</th>
+                                            <th scope="col">Created By</th>
+                                            <th scope="col">Status</th>
+                                            <th scope="col">Date</th>
                                             <th scope="col">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody class="border-0">
-                                        @if ($users->isNotEmpty())
-                                            @foreach ($users as $user )
-                                            <tr class="active">
+                                        @if($jobs->isNotEmpty())
+                                            @foreach ($jobs as $job)
+                                            <tr>
                                                 <td>
-                                                    <div class="job-name fw-500">{{$user->id}}</div>
+                                                    <p>{{$job->id}}</p>
+                                                    <p>Applicants::{{$job->applications->count()}}</p>
                                                 </td>
-                                                <td>{{$user->name}}</td>
-                                                <td>{{$user->email}}</td>
-                                                <td>{{$user->mobile}}</td>
+                                                <td>{{$job->title}}</td>
+                                                <td>{{$job->user->name}}</td>
+                                                <td>
+                                                    @if ($job->status==1)
+                                                        <p class="text-success">Active</p>
+                                                    @else
+                                                        <p class="text-danger">Block</p>
+                                                    @endif
+                                                </td>
+                                                <td>{{\carbon\carbon::parse($job->created_at)->format('d M, Y')}}</td>
                                                 <td>
                                                     <div class="action-dots">
                                                         <button href="#" class="btn" data-bs-toggle="dropdown" aria-expanded="false">
                                                             <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
                                                         </button>
                                                         <ul class="dropdown-menu dropdown-menu-end">
-                                                            <li><a class="dropdown-item" href="{{route('admin.users.edit',$user->id)}}"><i class="fa fa-edit" aria-hidden="true"></i> Edit</a></li>
-                                                            <li><a class="dropdown-item" href="#" onclick="deleteUser({{$user->id}})"><i class="fa fa-trash" aria-hidden="true"></i> Delete</a></li>
+                                                            <li><a class="dropdown-item" href="{{route('admin.job.edit',$job->id)}}"><i class="fa fa-edit" aria-hidden="true"></i> Edit</a></li>
+                                                            <li><a class="dropdown-item" href="#" onclick="deleteJob({{$job->id}})" ><i class="fa fa-trash" aria-hidden="true"></i> Delete</a></li>
                                                         </ul>
                                                     </div>
                                                 </td>
@@ -68,7 +77,7 @@
 
                                 </table>
                             </div>
-                            {{$users->links()}}
+                            {{$jobs->links()}}
                         </div>
                     </div>
                 </div>
@@ -79,10 +88,10 @@
 @endsection
 @section('customJs')
 <script type="text/javascript">
-function deleteUser(id) {
-    if (confirm("Are you sure you want to remove this user?")) {
+function deleteJob(id) {
+    if (confirm("Are you sure you want to remove this job?")) {
         $.ajax({
-            url: '{{ route("admin.users.destroy", '') }}/' + id,
+            url: '{{ route("admin.jobs.destroy", '') }}/' + id,
             type: 'delete',
             data: {
                 _token: '{{ csrf_token() }}'
@@ -92,7 +101,7 @@ function deleteUser(id) {
                 if (response.status) {
                     location.reload();
                 } else {
-                    alert('User not found or could not be deleted.');
+                    alert(response.message);
                 }
             },
             error: function(xhr, status, error) {
