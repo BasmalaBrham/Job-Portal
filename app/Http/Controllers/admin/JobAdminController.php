@@ -1,21 +1,18 @@
 <?php
 
 namespace App\Http\Controllers\admin;
-
 use App\Models\Job;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\JobType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-
 class JobAdminController extends Controller
 {
     public function index(){
         $jobs= Job::orderBy('created_at','DESC')->with('user','applications')->paginate(5);
         return view('admin.jobs.list',['jobs'=>$jobs]);
     }
-
     public function edit($id){
         $job=Job::findOrFail($id);
         $categories=Category::orderBy('name','ASC')->get();
@@ -64,15 +61,12 @@ class JobAdminController extends Controller
     }
     public function destroy(Request $request, $id) {
         $user = Job::find($id);
-
         if ($user == null) {
             session()->flash('error', 'Job not found');
             return response()->json(['status' => false ,'message' => 'Job not found']);
         }
-
         $user->delete();
         session()->flash('success', 'Job deleted successfully');
-
         return response()->json(['status' => true , 'message' => 'Job deleted successfully']);
     }
 }

@@ -3,9 +3,11 @@
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\admin\DashBoardController;
 use App\Http\Controllers\admin\JobAdminController;
+use App\Http\Controllers\Admin\JobApplicationsController;
 use App\Http\Controllers\admin\JobController;
 use App\Http\Controllers\admin\UserController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\JobApplicationController;
 use App\Http\Controllers\JobController as ControllersJobController;
 use App\Http\Controllers\JobsController;
 use Illuminate\Support\Facades\Route;
@@ -44,6 +46,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'checkRole']], funct
     Route::get('/jobs/edit/{id}',[JobAdminController::class ,'edit'])->name('admin.job.edit');
     Route::put('/jobs/{id}',[JobAdminController::class ,'update'])->name('admin.job.update');
     Route::delete('/jobs/{id}', [JobAdminController::class, 'destroy'])->name('admin.jobs.destroy');
+    Route::get('/job-applications',[JobApplicationsController::class,'index'])->name('admin.jobApllications');
+    Route::delete('/job-applications/{id}', [JobApplicationsController::class, 'destroy'])->name('admin.jobApllications.destroy');
 
 });
 
