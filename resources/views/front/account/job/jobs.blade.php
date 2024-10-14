@@ -116,6 +116,9 @@
                                     </div>
                                 </div>
                             @endforeach
+                            <div class="col-md-12">
+                                {{$Jobs->links()}}
+                            </div>
                             @else
                             <div class="col-md-12">jobs not found</div>
                         @endif
